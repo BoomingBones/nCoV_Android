@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_overview"
+            android:title="疫情总览" />
+
+        <item
+            android:id="@+id/nav_news"
+            android:title="实时播报" />
+
+        <item
+            android:id="@+id/nav_rumors"
+            android:title="辟谣与防护" />
+
+        <item
+            android:id="@+id/nav_information"
+            android:title="疾病知识" />
+
+    </group>
+
+</menu>
