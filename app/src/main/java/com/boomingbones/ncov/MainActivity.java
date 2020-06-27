@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         navView.setCheckedItem(R.id.nav_overview);
         navView.setNavigationItemSelectedListener(new NavItemSelectedListener());
 
-        replaceFragment(new OverviewFragment());
+        replaceFragment(new OverviewFragment(), R.string.overview);
     }
 
     @Override
@@ -62,10 +62,12 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private void replaceFragment(Fragment newFragment) {
+    private void replaceFragment(Fragment newFragment, int titleId) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.fragment_container, newFragment);
         transaction.commit();
+
+        ((Toolbar) findViewById(R.id.toolbar)).setTitle(titleId);
     }
 
     class NavItemSelectedListener implements NavigationView.OnNavigationItemSelectedListener {
@@ -76,16 +78,16 @@ public class MainActivity extends AppCompatActivity {
             }
             switch (item.getItemId()) {
                 case R.id.nav_overview:
-                    replaceFragment(new OverviewFragment());
+                    replaceFragment(new OverviewFragment(), R.string.overview);
                     break;
                 case R.id.nav_news:
-                    replaceFragment(new NewsFragment());
+                    replaceFragment(new NewsFragment(), R.string.news);
                     break;
                 case R.id.nav_rumors:
-                    replaceFragment(new RumorsFragment());
+                    replaceFragment(new RumorsFragment(), R.string.rumors);
                     break;
                 case R.id.nav_information:
-                    replaceFragment(new InformationFragment());
+                    replaceFragment(new InformationFragment(), R.string.information);
                     break;
             }
             drawerLayout.closeDrawers();

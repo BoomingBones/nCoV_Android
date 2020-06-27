@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">nCoV</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="overview">疫情总览</string>
+    <string name="news">实时播报</string>
+    <string name="rumors">辟谣与防护</string>
+    <string name="information">疾病知识</string>
 </resources>
