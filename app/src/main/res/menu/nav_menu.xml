@@ -5,18 +5,22 @@
 
         <item
             android:id="@+id/nav_overview"
+            android:icon="@drawable/ic_overview"
             android:title="疫情总览" />
 
         <item
             android:id="@+id/nav_news"
+            android:icon="@drawable/ic_news"
             android:title="实时播报" />
 
         <item
             android:id="@+id/nav_rumors"
+            android:icon="@drawable/ic_rumors"
             android:title="辟谣与防护" />
 
         <item
             android:id="@+id/nav_information"
+            android:icon="@drawable/ic_information"
             android:title="疾病知识" />
 
     </group>

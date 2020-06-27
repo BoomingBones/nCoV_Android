@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="darkBlack">#444</color>
+    <color name="lightBlack">#666</color>
+    <color name="darkGrey">#888</color>
+    <color name="lightGrey">#999</color>
+
+    <color name="fragment_news_background">#07A1E2</color>
 </resources>
