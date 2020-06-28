@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Ver 1.0.0"
+        android:text="Ver. DEMO"
         android:textColor="#FFF"
         android:textSize="15sp" />
 

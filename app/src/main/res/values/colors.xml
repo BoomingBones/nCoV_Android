@@ -4,10 +4,15 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <!-- 字体颜色 -->
     <color name="darkBlack">#444</color>
     <color name="lightBlack">#666</color>
     <color name="darkGrey">#888</color>
     <color name="lightGrey">#999</color>
+    <color name="white">#FFF</color>
 
+    <!-- 背景色 -->
     <color name="fragment_news_background">#07A1E2</color>
+    <color name="fragment_rumors_img_background">#66AFD8</color>
+    <color name="fragment_rumors_triangle_background">#F74C31</color>
 </resources>
