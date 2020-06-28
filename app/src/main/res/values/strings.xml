@@ -5,4 +5,20 @@
     <string name="news">实时播报</string>
     <string name="rumors">辟谣与防护</string>
     <string name="information">疾病知识</string>
+
+    <string name="information_whats_title">什么是新型冠状病毒？</string>
+    <string name="information_whats_content">此次流行的冠状病毒为一种新发现的冠状病毒，国际病毒分类委员会命名为 SARS-Cov-2。因为人群缺少对新型病毒株的免疫力，所以人群普遍易感。</string>
+    <string name="information_0_title">帮你排除感染症状</string>
+    <string name="information_0_content">出现什么症状可能感染了新型冠状病毒？如何在家做好自我隔离？</string>
+    <string name="information_1_title">冠状病毒怕什么？</string>
+    <string name="information_1_content">哪些人容易感染新型冠状病毒？什么人容易变成重症？新型冠状病毒致病性如何？</string>
+    <string name="information_2_title">做好预防免感染</string>
+    <string name="information_2_content">人口不密集的地方可以不带口罩吗？口罩能重复带吗？煮沸后能重复使用吗？</string>
+    <string name="information_3_title">日常防护要到位</string>
+    <string name="information_3_content">新型冠状病毒肺炎流行，外卖还能吃吗？买不到消毒液家里消毒用什么替代？</string>
+    <string name="information_4_title">如何确诊感染？</string>
+    <string name="information_4_content">新型冠状病毒肺炎患者有什么临床表现？医生如何识别并确诊新型冠状病毒肺炎？</string>
+    <string name="information_5_title">治疗方法早知道</string>
+    <string name="information_5_content">潜伏期能检查出来吗？感染了新型冠状病毒一定会得肺炎吗？新冠肺炎如何治疗？</string>
+    <string name="information_more">查看详情</string>
 </resources>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -52,7 +51,7 @@ public class NewsFragment extends Fragment {
 
         View item = LayoutInflater.from(getContext())
                 .inflate(R.layout.fragment_news_item, null);
-        CardView cardView = item.findViewById(R.id.cardView);
+        View cardView = item.findViewById(R.id.news_cardView);
         cardView.setTag(sourceUrl);
         cardView.setOnClickListener(new CardViewClickListener());
 

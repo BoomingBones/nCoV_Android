@@ -10,6 +10,7 @@
     <color name="darkGrey">#888</color>
     <color name="lightGrey">#999</color>
     <color name="white">#FFF</color>
+    <color name="more">#4169E2</color>
 
     <!-- 背景色 -->
     <color name="fragment_news_background">#07A1E2</color>
