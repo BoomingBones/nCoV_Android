@@ -11,9 +11,21 @@
     <color name="lightGrey">#999</color>
     <color name="white">#FFF</color>
     <color name="more">#4169E2</color>
+    <color name="curConfirmed">#F74C31</color>
+    <color name="imported">#F78207</color>
+    <color name="suspected">#A25A4E</color>
+    <color name="confirmed">#AE212C</color>
+    <color name="death">#5D7092</color>
+    <color name="cured">#28B7A3</color>
 
     <!-- 背景色 -->
+    <color name="fragment_overview_area">#E3E7F3</color>
+    <color name="fragment_overview_curConfirmedCount">#F3BAB0</color>
+    <color name="fragment_overview_confirmedCount">#E69A8D</color>
+    <color name="fragment_overview_curedCount">#95DB9A</color>
+    <color name="fragment_overview_deadCount">#B4C0D5</color>
+    <color name="fragment_overview_line_color">#DCDCDC</color>
     <color name="fragment_news_background">#07A1E2</color>
     <color name="fragment_rumors_img_background">#66AFD8</color>
-    <color name="fragment_rumors_triangle_background">#F74C31</color>
+    <color name="fragment_rumors_triangle_color">#F74C31</color>
 </resources>

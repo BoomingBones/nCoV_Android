@@ -6,7 +6,7 @@
     android:viewportHeight="24.0">
 
     <path
-        android:fillColor="@color/fragment_rumors_triangle_background"
+        android:fillColor="@color/fragment_rumors_triangle_color"
         android:pathData="M0 24v-24h24z"/>
 
 </vector>
