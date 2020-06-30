@@ -11,7 +11,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <include layout="@layout/fragment_overview_overall_domestic"/>
+        <FrameLayout
+            android:id="@+id/overall_container_domestic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <include layout="@layout/fragment_overview_list_header"/>
 
@@ -33,7 +36,10 @@
             android:text="@string/showAll"
             android:textColor="@color/more" />
 
-        <include layout="@layout/fragment_overview_overall_foreign"/>
+        <FrameLayout
+            android:id="@+id/overall_container_foreign"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <include layout="@layout/fragment_overview_list_header"/>
 
