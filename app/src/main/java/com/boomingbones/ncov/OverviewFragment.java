@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -43,6 +43,12 @@ public class OverviewFragment extends Fragment {
         view  = inflater.inflate(R.layout.fragment_overview, container, false);
         context = getContext();
 
+        initFragment(container);
+
+        return view;
+    }
+
+    private void initFragment(ViewGroup container) {
         View domestic = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_overview_overall_domestic, container, false);
         setTextViewText(Data.overallDomesticCurConfirmedCount_incr,
@@ -124,10 +130,6 @@ public class OverviewFragment extends Fragment {
             addItem(tempDataList2[0][i], tempDataList2[1][i], tempDataList2[2][i],
                     tempDataList2[3][i], tempDataList2[4][i], itemContainer2);
         }
-
-        Log.w("TEXT", ((TextView) foreign.findViewById(R.id.curedCount_text)).getText().toString());
-
-        return view;
     }
 
     private void setTextViewText(String increment, TextView textView, int colorId) {

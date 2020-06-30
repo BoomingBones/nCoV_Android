@@ -5,7 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +40,16 @@ public class RumorsFragment extends Fragment {
         context = getContext();
         itemContainer = view.findViewById(R.id.rumors_container);
 
+        initFragment();
+
+        return view;
+    }
+
+    private void initFragment() {
         for (int i = 0; i < RUMORS_ITEM_COUNT; i++) {
             addItem(i + 1, Data.rumorsTitleList[i],
                     Data.rumorsSummaryList[i], Data.rummorContentList[i]);
         }
-
-        return view;
     }
 
     private void addItem(int number, String title, String summary, String content) {
