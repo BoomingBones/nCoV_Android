@@ -8,31 +8,19 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ScrollView;
 
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int START_LOADING = 1;
-    private static final int FINISH_LOADING = 2;
-
     private DrawerLayout drawerLayout;
     private NavigationView navView;
-    private ScrollView fragmentContainer;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private Handler handler;
 
     @SuppressLint("HandlerLeak")
     @Override
@@ -53,32 +41,6 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.nav_view);
         navView.setCheckedItem(R.id.nav_overview);
         navView.setNavigationItemSelectedListener(new NavItemSelectedListener());
-
-        fragmentContainer = findViewById(R.id.fragment_container);
-        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                switch (msg.what) {
-                    case START_LOADING:
-                        Log.w("Thread", "START");
-                        swipeRefreshLayout.setRefreshing(true);
-                        fragmentContainer.setVisibility(View.INVISIBLE);
-                        break;
-                    case FINISH_LOADING:
-                        Log.w("Thread", "FINISH");
-                        fragmentContainer.setVisibility(View.VISIBLE);
-                        swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        };
 
         replaceFragment(new OverviewFragment(), R.string.overview);
     }
@@ -103,23 +65,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void replaceFragment(final Fragment newFragment, int titleId) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Message messageStart = new Message();
-                messageStart.what = START_LOADING;
-                handler.sendMessage(messageStart);
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.commit();
-
-                Message messageFinish = new Message();
-                messageFinish.what = FINISH_LOADING;
-                handler.sendMessage(messageFinish);
-            }
-        }).start();
-
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.commit();
         ((Toolbar) findViewById(R.id.toolbar)).setTitle(titleId);
     }
 
@@ -132,19 +80,15 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_overview:
                     replaceFragment(new OverviewFragment(), R.string.overview);
-                    fragmentContainer.scrollTo(0, 0);
                     break;
                 case R.id.nav_news:
                     replaceFragment(new NewsFragment(), R.string.news);
-                    fragmentContainer.scrollTo(0, 0);
                     break;
                 case R.id.nav_rumors:
                     replaceFragment(new RumorsFragment(), R.string.rumors);
-                    fragmentContainer.scrollTo(0, 0);
                     break;
                 case R.id.nav_information:
                     replaceFragment(new InformationFragment(), R.string.information);
-                    fragmentContainer.scrollTo(0, 0);
                     break;
             }
             drawerLayout.closeDrawers();

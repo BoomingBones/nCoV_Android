@@ -51,76 +51,76 @@ public class OverviewFragment extends Fragment {
     private void initFragment(ViewGroup container) {
         View domestic = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_overview_overall_domestic, container, false);
-        setTextViewText(Data.overallDomesticCurConfirmedCount_incr,
+        setTextViewText(DataStatic.overallDomesticCurConfirmedCount_incr,
                 (TextView) domestic.findViewById(R.id.curConfirmedIncr_text),
                 R.color.curConfirmed);
-        setTextViewText(Data.overallDomesticImportedCount_incr,
+        setTextViewText(DataStatic.overallDomesticImportedCount_incr,
                 (TextView) domestic.findViewById(R.id.importedIncr_text),
                 R.color.imported);
-        setTextViewText(Data.overallDomesticSuspectedCount_incr,
+        setTextViewText(DataStatic.overallDomesticSuspectedCount_incr,
                 (TextView) domestic.findViewById(R.id.suspectedIncr_text),
                 R.color.suspected);
-        setTextViewText(Data.overallDomesticConfirmedCount_incr,
+        setTextViewText(DataStatic.overallDomesticConfirmedCount_incr,
                 (TextView) domestic.findViewById(R.id.confirmedIncr_text),
                 R.color.confirmed);
-        setTextViewText(Data.overallDomesticDeadCount_incr,
+        setTextViewText(DataStatic.overallDomesticDeadCount_incr,
                 (TextView) domestic.findViewById(R.id.deathIncr_text),
                 R.color.death);
-        setTextViewText(Data.overallDomesticCuredCount_incr,
+        setTextViewText(DataStatic.overallDomesticCuredCount_incr,
                 (TextView) domestic.findViewById(R.id.curedIncr_text),
                 R.color.cured);
         ((TextView) domestic.findViewById(R.id.curConfirmedCount_text))
-                .setText(addComma(Data.overallDomesticCurConfirmedCount));
+                .setText(addComma(DataStatic.overallDomesticCurConfirmedCount));
         ((TextView) domestic.findViewById(R.id.importedCount_text))
-                .setText(addComma(Data.overallDomesticImportedCount));
+                .setText(addComma(DataStatic.overallDomesticImportedCount));
         ((TextView) domestic.findViewById(R.id.suspectedCount_text))
-                .setText(addComma(Data.overallDomesticSuspectedCount));
+                .setText(addComma(DataStatic.overallDomesticSuspectedCount));
         ((TextView) domestic.findViewById(R.id.confirmedCount_text))
-                .setText(addComma(Data.overallDomesticConfirmedCount));
+                .setText(addComma(DataStatic.overallDomesticConfirmedCount));
         ((TextView) domestic.findViewById(R.id.deathCount_text))
-                .setText(addComma(Data.overallDomesticDeadCount));
+                .setText(addComma(DataStatic.overallDomesticDeadCount));
         ((TextView) domestic.findViewById(R.id.curedCount_text))
-                .setText(addComma(Data.overallDomesticCuredCount));
+                .setText(addComma(DataStatic.overallDomesticCuredCount));
         FrameLayout overallContainer_domestic = view.findViewById(R.id.overall_container_domestic);
         overallContainer_domestic.addView(domestic);
 
         View foreign = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_overview_overall_foreign, container, false);
-        setTextViewText(Data.overallForeignCurConfirmedCount_incr,
+        setTextViewText(DataStatic.overallForeignCurConfirmedCount_incr,
                 (TextView) foreign.findViewById(R.id.curConfirmedIncr_text),
                 R.color.curConfirmed);
-        setTextViewText(Data.overallForeignConfirmedCount_incr,
+        setTextViewText(DataStatic.overallForeignConfirmedCount_incr,
                 (TextView) foreign.findViewById(R.id.confirmedIncr_text),
                 R.color.confirmed);
-        setTextViewText(Data.overallForeignDeadCount_incr,
+        setTextViewText(DataStatic.overallForeignDeadCount_incr,
                 (TextView) foreign.findViewById(R.id.deathIncr_text),
                 R.color.death);
-        setTextViewText(Data.overallForeignCuredCount_incr,
+        setTextViewText(DataStatic.overallForeignCuredCount_incr,
                 (TextView) foreign.findViewById(R.id.curedIncr_text),
                 R.color.cured);
         ((TextView) foreign.findViewById(R.id.curConfirmedCount_text))
-                .setText(addComma(Data.overallForeignCurConfirmedCount));
+                .setText(addComma(DataStatic.overallForeignCurConfirmedCount));
         ((TextView) foreign.findViewById(R.id.confirmedCount_text))
-                .setText(addComma(Data.overallForeignConfirmedCount));
+                .setText(addComma(DataStatic.overallForeignConfirmedCount));
         ((TextView) foreign.findViewById(R.id.deathCount_text))
-                .setText(addComma(Data.overallForeignDeadCount));
+                .setText(addComma(DataStatic.overallForeignDeadCount));
         ((TextView) foreign.findViewById(R.id.curedCount_text))
-                .setText(addComma(Data.overallForeignCuredCount));
+                .setText(addComma(DataStatic.overallForeignCuredCount));
         FrameLayout overallContainer_foreign = view.findViewById(R.id.overall_container_foreign);
         overallContainer_foreign.addView(foreign);
 
         String[][] tempDataList1 = {
-                Arrays.copyOf(Data.domesticProvinceNameList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.domesticCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.domesticConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.domesticDeadCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.domesticCuredCountList, OVERVIEW_ITEM_COUNT)};
+                Arrays.copyOf(DataStatic.domesticProvinceNameList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.domesticCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.domesticConfirmedCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.domesticDeadCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.domesticCuredCountList, OVERVIEW_ITEM_COUNT)};
         String[][] tempDataList2 = {
-                Arrays.copyOf(Data.foreignCountryNameList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.foreignCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.foreignConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.foreignDeadCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(Data.foreignCuredCountList, OVERVIEW_ITEM_COUNT)};
+                Arrays.copyOf(DataStatic.foreignCountryNameList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.foreignCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.foreignConfirmedCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.foreignDeadCountList, OVERVIEW_ITEM_COUNT),
+                Arrays.copyOf(DataStatic.foreignCuredCountList, OVERVIEW_ITEM_COUNT)};
         LinearLayout itemContainer1 = view.findViewById(R.id.overview_domestic_container);
         LinearLayout itemContainer2 = view.findViewById(R.id.overview_foreign_container);
 
