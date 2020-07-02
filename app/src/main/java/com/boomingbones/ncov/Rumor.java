@@ -2,7 +2,7 @@ package com.boomingbones.ncov;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Rumor {
+class Rumor {
 
     String title;
 

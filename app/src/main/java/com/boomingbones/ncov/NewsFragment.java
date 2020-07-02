@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Handler;
-import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +39,6 @@ public class NewsFragment extends Fragment {
 
     private static final int NEWS_ITEM_COUNT = 10;
     private List<News> newsList;
-    private Handler handler;
 
     private View view;
     private LinearLayout itemContainer;
@@ -67,20 +63,7 @@ public class NewsFragment extends Fragment {
             }
         });
 
-        swipeRefreshLayout.setRefreshing(true);
-        getData();
-
-        handler = new Handler() {
-            @Override
-            public void handleMessage(@NonNull Message msg) {
-                if (msg.what == 1) {
-                    for (News news : newsList) {
-                        addItem(news.pubTime, news.title, news.content, news.infoSource, news.sourceUrl);
-                    }
-                    swipeRefreshLayout.setRefreshing(false);
-                }
-            }
-        };
+        initFragment();
 
         // Inflate the layout for this fragment
         return view;
@@ -114,7 +97,9 @@ public class NewsFragment extends Fragment {
         }
     }
 
-    private void getData() {
+    private void initFragment() {
+        swipeRefreshLayout.setRefreshing(true);
+
         String address = "https://lab.isaaclin.cn/nCoV/api/news";
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
@@ -135,9 +120,15 @@ public class NewsFragment extends Fragment {
                 Gson gson = new Gson();
                 newsList = gson.fromJson(element, new TypeToken<List<News>>(){}.getType());
 
-                Message message = new Message();
-                message.what = 1;
-                handler.sendMessage(message);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (News news : newsList) {
+                            addItem(news.pubTime, news.title, news.content, news.infoSource, news.sourceUrl);
+                        }
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
             }
         });
     }

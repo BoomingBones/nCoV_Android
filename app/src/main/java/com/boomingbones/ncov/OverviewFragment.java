@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -15,10 +16,26 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 /**
@@ -30,6 +47,7 @@ public class OverviewFragment extends Fragment {
 
     private View view;
     private Context context;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public OverviewFragment() {
         // Required empty public constructor
@@ -42,94 +60,137 @@ public class OverviewFragment extends Fragment {
         // Inflate the layout for this fragment
         view  = inflater.inflate(R.layout.fragment_overview, container, false);
         context = getContext();
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         initFragment(container);
 
         return view;
     }
 
-    private void initFragment(ViewGroup container) {
-        View domestic = LayoutInflater.from(context)
-                .inflate(R.layout.fragment_overview_overall_domestic, container, false);
-        setTextViewText(DataStatic.overallDomesticCurConfirmedCount_incr,
-                (TextView) domestic.findViewById(R.id.curConfirmedIncr_text),
-                R.color.curConfirmed);
-        setTextViewText(DataStatic.overallDomesticImportedCount_incr,
-                (TextView) domestic.findViewById(R.id.importedIncr_text),
-                R.color.imported);
-        setTextViewText(DataStatic.overallDomesticSuspectedCount_incr,
-                (TextView) domestic.findViewById(R.id.suspectedIncr_text),
-                R.color.suspected);
-        setTextViewText(DataStatic.overallDomesticConfirmedCount_incr,
-                (TextView) domestic.findViewById(R.id.confirmedIncr_text),
-                R.color.confirmed);
-        setTextViewText(DataStatic.overallDomesticDeadCount_incr,
-                (TextView) domestic.findViewById(R.id.deathIncr_text),
-                R.color.death);
-        setTextViewText(DataStatic.overallDomesticCuredCount_incr,
-                (TextView) domestic.findViewById(R.id.curedIncr_text),
-                R.color.cured);
-        ((TextView) domestic.findViewById(R.id.curConfirmedCount_text))
-                .setText(addComma(DataStatic.overallDomesticCurConfirmedCount));
-        ((TextView) domestic.findViewById(R.id.importedCount_text))
-                .setText(addComma(DataStatic.overallDomesticImportedCount));
-        ((TextView) domestic.findViewById(R.id.suspectedCount_text))
-                .setText(addComma(DataStatic.overallDomesticSuspectedCount));
-        ((TextView) domestic.findViewById(R.id.confirmedCount_text))
-                .setText(addComma(DataStatic.overallDomesticConfirmedCount));
-        ((TextView) domestic.findViewById(R.id.deathCount_text))
-                .setText(addComma(DataStatic.overallDomesticDeadCount));
-        ((TextView) domestic.findViewById(R.id.curedCount_text))
-                .setText(addComma(DataStatic.overallDomesticCuredCount));
-        FrameLayout overallContainer_domestic = view.findViewById(R.id.overall_container_domestic);
-        overallContainer_domestic.addView(domestic);
+    private void initFragment(final ViewGroup container) {
+        swipeRefreshLayout.setRefreshing(true);
 
-        View foreign = LayoutInflater.from(context)
-                .inflate(R.layout.fragment_overview_overall_foreign, container, false);
-        setTextViewText(DataStatic.overallForeignCurConfirmedCount_incr,
-                (TextView) foreign.findViewById(R.id.curConfirmedIncr_text),
-                R.color.curConfirmed);
-        setTextViewText(DataStatic.overallForeignConfirmedCount_incr,
-                (TextView) foreign.findViewById(R.id.confirmedIncr_text),
-                R.color.confirmed);
-        setTextViewText(DataStatic.overallForeignDeadCount_incr,
-                (TextView) foreign.findViewById(R.id.deathIncr_text),
-                R.color.death);
-        setTextViewText(DataStatic.overallForeignCuredCount_incr,
-                (TextView) foreign.findViewById(R.id.curedIncr_text),
-                R.color.cured);
-        ((TextView) foreign.findViewById(R.id.curConfirmedCount_text))
-                .setText(addComma(DataStatic.overallForeignCurConfirmedCount));
-        ((TextView) foreign.findViewById(R.id.confirmedCount_text))
-                .setText(addComma(DataStatic.overallForeignConfirmedCount));
-        ((TextView) foreign.findViewById(R.id.deathCount_text))
-                .setText(addComma(DataStatic.overallForeignDeadCount));
-        ((TextView) foreign.findViewById(R.id.curedCount_text))
-                .setText(addComma(DataStatic.overallForeignCuredCount));
-        FrameLayout overallContainer_foreign = view.findViewById(R.id.overall_container_foreign);
-        overallContainer_foreign.addView(foreign);
+        String address = "https://ncov.dxy.cn/ncovh5/view/pneumonia";
+        HttpUtil.sendHttpRequest(address, new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context, "Failure", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
 
-        String[][] tempDataList1 = {
-                Arrays.copyOf(DataStatic.domesticProvinceNameList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.domesticCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.domesticConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.domesticDeadCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.domesticCuredCountList, OVERVIEW_ITEM_COUNT)};
-        String[][] tempDataList2 = {
-                Arrays.copyOf(DataStatic.foreignCountryNameList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.foreignCurConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.foreignConfirmedCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.foreignDeadCountList, OVERVIEW_ITEM_COUNT),
-                Arrays.copyOf(DataStatic.foreignCuredCountList, OVERVIEW_ITEM_COUNT)};
-        LinearLayout itemContainer1 = view.findViewById(R.id.overview_domestic_container);
-        LinearLayout itemContainer2 = view.findViewById(R.id.overview_foreign_container);
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String responseString = response.body().string();
+                String jsonString = null;
+                Matcher matcher;
+                JsonObject object;
+                Gson gson = new Gson();
 
-        for (int i = 0; i < OVERVIEW_ITEM_COUNT; i++) {
-            addItem(tempDataList1[0][i], tempDataList1[1][i], tempDataList1[2][i],
-                    tempDataList1[3][i], tempDataList1[4][i], itemContainer1);
-            addItem(tempDataList2[0][i], tempDataList2[1][i], tempDataList2[2][i],
-                    tempDataList2[3][i], tempDataList2[4][i], itemContainer2);
-        }
+                matcher = Pattern.compile("(?<=Service = ).*?(?=\\}catch)").matcher(responseString);
+                if (matcher.find()) {
+                    jsonString = matcher.group();
+                }
+                object = new JsonParser().parse(jsonString).getAsJsonObject();
+                JsonElement element = object.get("globalStatistics");
+                final OverviewDomestic domestic = gson.fromJson(jsonString, OverviewDomestic.class);
+                final OverviewGlobal global = gson.fromJson(element, OverviewGlobal.class);
+
+                matcher = Pattern.compile("(?<=2true = ).*?(?=\\}catch)").matcher(responseString);
+                if (matcher.find()) {
+                    jsonString = matcher.group();
+                }
+                final List<OverviewCountry> countryList = gson.fromJson(jsonString, new TypeToken<List<OverviewCountry>>(){}.getType());
+
+                matcher = Pattern.compile("(?<=Stat = ).*?(?=\\}catch)").matcher(responseString);
+                if (matcher.find()) {
+                    jsonString = matcher.group();
+                }
+                final List<OverviewProvince> provinceList = gson.fromJson(jsonString, new TypeToken<List<OverviewProvince>>(){}.getType());
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        View domesticView = LayoutInflater.from(context)
+                                .inflate(R.layout.fragment_overview_overall_domestic, container, false);
+                        setTextViewText(domestic.currentConfirmedIncr,
+                                (TextView) domesticView.findViewById(R.id.curConfirmedIncr_text),
+                                R.color.curConfirmed);
+                        setTextViewText(domestic.importedIncr,
+                                (TextView) domesticView.findViewById(R.id.importedIncr_text),
+                                R.color.imported);
+                        setTextViewText(domestic.suspectIncr,
+                                (TextView) domesticView.findViewById(R.id.suspectedIncr_text),
+                                R.color.suspected);
+                        setTextViewText(domestic.confirmedIncr,
+                                (TextView) domesticView.findViewById(R.id.confirmedIncr_text),
+                                R.color.confirmed);
+                        setTextViewText(domestic.deadIncr,
+                                (TextView) domesticView.findViewById(R.id.deathIncr_text),
+                                R.color.death);
+                        setTextViewText(domestic.curedIncr,
+                                (TextView) domesticView.findViewById(R.id.curedIncr_text),
+                                R.color.cured);
+                        ((TextView) domesticView.findViewById(R.id.curConfirmedCount_text))
+                                .setText(addComma(domestic.currentConfirmedCount));
+                        ((TextView) domesticView.findViewById(R.id.importedCount_text))
+                                .setText(addComma(domestic.importedCount));
+                        ((TextView) domesticView.findViewById(R.id.suspectedCount_text))
+                                .setText(addComma(domestic.suspectCount));
+                        ((TextView) domesticView.findViewById(R.id.confirmedCount_text))
+                                .setText(addComma(domestic.confirmedCount));
+                        ((TextView) domesticView.findViewById(R.id.deathCount_text))
+                                .setText(addComma(domestic.deadCount));
+                        ((TextView) domesticView.findViewById(R.id.curedCount_text))
+                                .setText(addComma(domestic.curedCount));
+                        FrameLayout overallContainer_domestic = view.findViewById(R.id.overall_container_domestic);
+                        overallContainer_domestic.addView(domesticView);
+
+                        View foreignView = LayoutInflater.from(context)
+                                .inflate(R.layout.fragment_overview_overall_foreign, container, false);
+                        setTextViewText(global.currentConfirmedIncr,
+                                (TextView) foreignView.findViewById(R.id.curConfirmedIncr_text),
+                                R.color.curConfirmed);
+                        setTextViewText(global.confirmedIncr,
+                                (TextView) foreignView.findViewById(R.id.confirmedIncr_text),
+                                R.color.confirmed);
+                        setTextViewText(global.deadIncr,
+                                (TextView) foreignView.findViewById(R.id.deathIncr_text),
+                                R.color.death);
+                        setTextViewText(global.curedIncr,
+                                (TextView) foreignView.findViewById(R.id.curedIncr_text),
+                                R.color.cured);
+                        ((TextView) foreignView.findViewById(R.id.curConfirmedCount_text))
+                                .setText(addComma(global.currentConfirmedCount));
+                        ((TextView) foreignView.findViewById(R.id.confirmedCount_text))
+                                .setText(addComma(global.confirmedCount));
+                        ((TextView) foreignView.findViewById(R.id.deathCount_text))
+                                .setText(addComma(global.deadCount));
+                        ((TextView) foreignView.findViewById(R.id.curedCount_text))
+                                .setText(addComma(global.curedCount));
+                        FrameLayout overallContainer_foreign = view.findViewById(R.id.overall_container_foreign);
+                        overallContainer_foreign.addView(foreignView);
+
+                        LinearLayout itemContainer1 = view.findViewById(R.id.overview_domestic_container);
+                        LinearLayout itemContainer2 = view.findViewById(R.id.overview_foreign_container);
+
+                        for (OverviewProvince province : provinceList.subList(0, OVERVIEW_ITEM_COUNT)) {
+                            addItem(province.provinceName, province.currentConfirmedCount, province.confirmedCount,
+                                    province.deadCount, province.curedCount, itemContainer1);
+                        }
+                        for (OverviewCountry country : countryList.subList(0, OVERVIEW_ITEM_COUNT)) {
+                            addItem(country.countryName, country.currentConfirmedCount, country.confirmedCount,
+                                    country.deadCount, country.curedCount, itemContainer2);
+                        }
+
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        });
     }
 
     private void setTextViewText(String increment, TextView textView, int colorId) {
