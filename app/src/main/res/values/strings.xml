@@ -12,6 +12,9 @@
     <string name="overview_death">死亡</string>
     <string name="overview_cured">治愈</string>
 
+    <string name="overall_domestic">全国疫情详情</string>
+    <string name="overall_global">全球疫情详情</string>
+
     <string name="information_whats_title">什么是新型冠状病毒？</string>
     <string name="information_whats_content">此次流行的冠状病毒为一种新发现的冠状病毒，国际病毒分类委员会命名为 SARS-Cov-2。因为人群缺少对新型病毒株的免疫力，所以人群普遍易感。</string>
     <string name="information_0_title">帮你排除感染症状</string>

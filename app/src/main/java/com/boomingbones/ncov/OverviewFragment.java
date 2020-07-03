@@ -2,6 +2,7 @@ package com.boomingbones.ncov;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,6 +46,8 @@ import okhttp3.Response;
 public class OverviewFragment extends Fragment {
 
     private static final int OVERVIEW_ITEM_COUNT = 15;
+    private ArrayList<OverviewArea> provinceList;
+    private ArrayList<OverviewArea> countryList;
 
     private View view;
     private Context context;
@@ -62,6 +66,9 @@ public class OverviewFragment extends Fragment {
         context = getContext();
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
+        view.findViewById(R.id.viewAll_provinces).setOnClickListener(new ViewAllClickListener());
+        view.findViewById(R.id.viewAll_countries).setOnClickListener(new ViewAllClickListener());
+
         initFragment(container);
 
         return view;
@@ -70,7 +77,7 @@ public class OverviewFragment extends Fragment {
     private void initFragment(final ViewGroup container) {
         swipeRefreshLayout.setRefreshing(true);
 
-        String address = "https://ncov.dxy.cn/ncovh5/view/pneumonia";
+        final String address = "https://ncov.dxy.cn/ncovh5/view/pneumonia";
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -103,87 +110,82 @@ public class OverviewFragment extends Fragment {
                 if (matcher.find()) {
                     jsonString = matcher.group();
                 }
-                final List<OverviewCountry> countryList = gson.fromJson(jsonString, new TypeToken<List<OverviewCountry>>(){}.getType());
+                countryList = gson.fromJson(jsonString, new TypeToken<List<OverviewArea>>(){}.getType());
 
                 matcher = Pattern.compile("(?<=Stat = ).*?(?=\\}catch)").matcher(responseString);
                 if (matcher.find()) {
                     jsonString = matcher.group();
                 }
-                final List<OverviewProvince> provinceList = gson.fromJson(jsonString, new TypeToken<List<OverviewProvince>>(){}.getType());
+                provinceList = gson.fromJson(jsonString, new TypeToken<List<OverviewArea>>(){}.getType());
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        View domesticView = LayoutInflater.from(context)
-                                .inflate(R.layout.fragment_overview_overall_domestic, container, false);
-                        setTextViewText(domestic.currentConfirmedIncr,
-                                (TextView) domesticView.findViewById(R.id.curConfirmedIncr_text),
-                                R.color.curConfirmed);
-                        setTextViewText(domestic.importedIncr,
-                                (TextView) domesticView.findViewById(R.id.importedIncr_text),
-                                R.color.imported);
-                        setTextViewText(domestic.suspectIncr,
-                                (TextView) domesticView.findViewById(R.id.suspectedIncr_text),
-                                R.color.suspected);
-                        setTextViewText(domestic.confirmedIncr,
-                                (TextView) domesticView.findViewById(R.id.confirmedIncr_text),
-                                R.color.confirmed);
-                        setTextViewText(domestic.deadIncr,
-                                (TextView) domesticView.findViewById(R.id.deathIncr_text),
-                                R.color.death);
-                        setTextViewText(domestic.curedIncr,
-                                (TextView) domesticView.findViewById(R.id.curedIncr_text),
-                                R.color.cured);
-                        ((TextView) domesticView.findViewById(R.id.curConfirmedCount_text))
-                                .setText(addComma(domestic.currentConfirmedCount));
-                        ((TextView) domesticView.findViewById(R.id.importedCount_text))
-                                .setText(addComma(domestic.importedCount));
-                        ((TextView) domesticView.findViewById(R.id.suspectedCount_text))
-                                .setText(addComma(domestic.suspectCount));
-                        ((TextView) domesticView.findViewById(R.id.confirmedCount_text))
-                                .setText(addComma(domestic.confirmedCount));
-                        ((TextView) domesticView.findViewById(R.id.deathCount_text))
-                                .setText(addComma(domestic.deadCount));
-                        ((TextView) domesticView.findViewById(R.id.curedCount_text))
-                                .setText(addComma(domestic.curedCount));
-                        FrameLayout overallContainer_domestic = view.findViewById(R.id.overall_container_domestic);
-                        overallContainer_domestic.addView(domesticView);
+                        View domesticView = LayoutInflater.from(context).inflate(
+                                R.layout.fragment_overview_domestic, container, false);
+                        View globalView = LayoutInflater.from(context).inflate(
+                                R.layout.fragment_overview_global, container, false);
 
-                        View foreignView = LayoutInflater.from(context)
-                                .inflate(R.layout.fragment_overview_overall_foreign, container, false);
-                        setTextViewText(global.currentConfirmedIncr,
-                                (TextView) foreignView.findViewById(R.id.curConfirmedIncr_text),
-                                R.color.curConfirmed);
-                        setTextViewText(global.confirmedIncr,
-                                (TextView) foreignView.findViewById(R.id.confirmedIncr_text),
-                                R.color.confirmed);
-                        setTextViewText(global.deadIncr,
-                                (TextView) foreignView.findViewById(R.id.deathIncr_text),
-                                R.color.death);
-                        setTextViewText(global.curedIncr,
-                                (TextView) foreignView.findViewById(R.id.curedIncr_text),
-                                R.color.cured);
-                        ((TextView) foreignView.findViewById(R.id.curConfirmedCount_text))
-                                .setText(addComma(global.currentConfirmedCount));
-                        ((TextView) foreignView.findViewById(R.id.confirmedCount_text))
-                                .setText(addComma(global.confirmedCount));
-                        ((TextView) foreignView.findViewById(R.id.deathCount_text))
-                                .setText(addComma(global.deadCount));
-                        ((TextView) foreignView.findViewById(R.id.curedCount_text))
-                                .setText(addComma(global.curedCount));
-                        FrameLayout overallContainer_foreign = view.findViewById(R.id.overall_container_foreign);
-                        overallContainer_foreign.addView(foreignView);
+                        int[] incrTextViewId = {
+                                R.id.curConfirmedIncr_text, R.id.confirmedIncr_text,
+                                R.id.deathIncr_text, R.id.curedIncr_text,
+                                R.id.importedIncr_text, R.id.suspectedIncr_text};
+                        int[] countTextViewId = {
+                                R.id.curConfirmedCount_text, R.id.confirmedCount_text,
+                                R.id.deathCount_text, R.id.curedCount_text,
+                                R.id.importedCount_text, R.id.suspectedCount_text};
+                        int[] colorId = {
+                                R.color.curConfirmed, R.color.confirmed, R.color.death,
+                                R.color.cured, R.color.imported, R.color.suspected};
+                        String[] domesticIncrValue = {
+                                domestic.currentConfirmedIncr, domestic.confirmedIncr,
+                                domestic.deadIncr, domestic.curedIncr,
+                                domestic.importedIncr, domestic.suspectIncr};
+                        String[] domesticCountValue = {
+                                domestic.currentConfirmedCount, domestic.confirmedCount,
+                                domestic.deadCount, domestic.curedCount,
+                                domestic.importedCount, domestic.suspectCount};
+                        String[] globalIncrValue = {
+                                global.currentConfirmedIncr, global.confirmedIncr,
+                                global.deadIncr, global.curedIncr};
+                        String[] globalCountValue = {
+                                global.currentConfirmedCount, global.confirmedCount,
+                                global.deadCount, global.curedCount};
+
+                        for (int i = 0; i < 6; i++) {
+                            setTextViewText(domesticIncrValue[i], colorId[i],
+                                    (TextView) domesticView.findViewById(incrTextViewId[i]));
+                            ((TextView) domesticView.findViewById(countTextViewId[i]))
+                                    .setText(addComma(domesticCountValue[i]));
+                        }
+                        ((FrameLayout) view.findViewById(R.id.overall_container_domestic)).addView(domesticView);
+
+                        for (int i = 0; i < 4; i++) {
+                            setTextViewText(globalIncrValue[i], colorId[i],
+                                    (TextView) globalView.findViewById(incrTextViewId[i]));
+                            ((TextView) globalView.findViewById(countTextViewId[i]))
+                                    .setText(addComma(globalCountValue[i]));
+                        }
+                        ((FrameLayout) view.findViewById(R.id.overall_container_global)).addView(globalView);
 
                         LinearLayout itemContainer1 = view.findViewById(R.id.overview_domestic_container);
                         LinearLayout itemContainer2 = view.findViewById(R.id.overview_foreign_container);
 
-                        for (OverviewProvince province : provinceList.subList(0, OVERVIEW_ITEM_COUNT)) {
-                            addItem(province.provinceName, province.currentConfirmedCount, province.confirmedCount,
-                                    province.deadCount, province.curedCount, itemContainer1);
+                        for (OverviewArea province : provinceList.subList(0, OVERVIEW_ITEM_COUNT)) {
+                            addItem(province.areaName,
+                                    addComma(province.currentConfirmedCount),
+                                    addComma(province.confirmedCount),
+                                    addComma(province.deadCount),
+                                    addComma(province.curedCount),
+                                    itemContainer1);
                         }
-                        for (OverviewCountry country : countryList.subList(0, OVERVIEW_ITEM_COUNT)) {
-                            addItem(country.countryName, country.currentConfirmedCount, country.confirmedCount,
-                                    country.deadCount, country.curedCount, itemContainer2);
+                        for (OverviewArea country : countryList.subList(0, OVERVIEW_ITEM_COUNT)) {
+                            addItem(country.areaName,
+                                    addComma(country.currentConfirmedCount),
+                                    addComma(country.confirmedCount),
+                                    addComma(country.deadCount),
+                                    addComma(country.curedCount),
+                                    itemContainer2);
                         }
 
                         swipeRefreshLayout.setRefreshing(false);
@@ -193,7 +195,7 @@ public class OverviewFragment extends Fragment {
         });
     }
 
-    private void setTextViewText(String increment, TextView textView, int colorId) {
+    private void setTextViewText(String increment, int colorId, TextView textView) {
         if (increment.equals("0")) {
             textView.setText("较昨日无变化");
         } else {
@@ -228,5 +230,24 @@ public class OverviewFragment extends Fragment {
     private String addComma(String string) {
         DecimalFormat decimalFormat = new DecimalFormat(",###");
         return decimalFormat.format(Double.parseDouble(string));
+    }
+
+    class ViewAllClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(getActivity(), ListViewActivity.class);
+
+            if (v.getId() == R.id.viewAll_provinces) {
+                bundle.putSerializable("area_data", provinceList);
+                intent.putExtra("title", R.string.overall_domestic);
+            } else {
+                bundle.putSerializable("area_data", countryList);
+                intent.putExtra("title", R.string.overall_global);
+            }
+
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 }

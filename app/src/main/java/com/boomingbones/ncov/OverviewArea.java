@@ -2,10 +2,12 @@ package com.boomingbones.ncov;
 
 import com.google.gson.annotations.SerializedName;
 
-public class OverviewCountry {
+import java.io.Serializable;
+
+public class OverviewArea implements Serializable {
 
     @SerializedName("provinceName")
-    String countryName;
+    String areaName;
 
     String currentConfirmedCount;
 
