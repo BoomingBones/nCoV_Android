@@ -1,4 +1,4 @@
-package com.boomingbones.ncov;
+package com.boomingbones.ncov.tools;
 
 import okhttp3.Call;
 import okhttp3.Callback;

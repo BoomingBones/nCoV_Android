@@ -7,9 +7,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import com.boomingbones.ncov.struct.Area;
+import com.boomingbones.ncov.tools.ListViewAdapter;
 
 import java.util.List;
 
@@ -32,7 +34,7 @@ public class ListViewActivity extends AppCompatActivity {
         Intent intent = getIntent();
         setTitle(intent.getIntExtra("title", 0));
         Bundle bundle = intent.getExtras();
-        List<OverviewArea> areaList = (List<OverviewArea>) bundle.getSerializable("area_data");
+        List<Area> areaList = (List<Area>) bundle.getSerializable("area_data");
         ListViewAdapter adapter = new ListViewAdapter(
                 ListViewActivity.this, R.layout.fragment_overview_list_item, areaList);
         listView.setAdapter(adapter);

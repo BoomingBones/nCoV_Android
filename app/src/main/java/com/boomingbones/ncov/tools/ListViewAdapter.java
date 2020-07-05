@@ -1,4 +1,4 @@
-package com.boomingbones.ncov;
+package com.boomingbones.ncov.tools;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.boomingbones.ncov.R;
+import com.boomingbones.ncov.struct.Area;
+
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class ListViewAdapter extends ArrayAdapter<OverviewArea> {
+public class ListViewAdapter extends ArrayAdapter<Area> {
 
     private int resourceId;
 
-    ListViewAdapter(Context context, int textViewResourceId, List<OverviewArea> objects) {
+    public ListViewAdapter(Context context, int textViewResourceId, List<Area> objects) {
         super(context, textViewResourceId, objects);
         resourceId = textViewResourceId;
     }
@@ -25,7 +28,7 @@ public class ListViewAdapter extends ArrayAdapter<OverviewArea> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        OverviewArea area = getItem(position);
+        Area area = getItem(position);
         View view;
         ViewHolder viewHolder;
 
