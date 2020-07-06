@@ -6,8 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +46,11 @@ public class RumorsFragment extends Fragment {
     private View view;
     private Context context;
     private LinearLayout itemContainer;
-    private SwipeRefreshLayout swipeRefreshLayout;
+    private Handler handler;
 
-    public RumorsFragment() {
+    public RumorsFragment(Handler handler) {
         // Required empty public constructor
+        this.handler = handler;
     }
 
     @SuppressLint("HandlerLeak")
@@ -59,14 +61,6 @@ public class RumorsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_rumors, container, false);
         context = getContext();
         itemContainer = view.findViewById(R.id.rumors_container);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
 
         initFragment();
 
@@ -76,15 +70,17 @@ public class RumorsFragment extends Fragment {
     private void addItem(int number, String title, String summary, String content) {
         View item = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_rumors_item, null);
-
         if (number == 1) {
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
-            int px = dp2px(10);
+
+            float scale = context.getResources().getDisplayMetrics().density;
+            int px = (int) (10 * scale + 0.5f);
             params.setMargins(px, px, px, px);
             item.findViewById(R.id.rumors_cardView).setLayoutParams(params);
         }
+
         ((TextView) item.findViewById(R.id.rumors_number_text)).setText(String.valueOf(number));
         ((TextView) item.findViewById(R.id.rumors_title_text)).setText(title);
         ((TextView) item.findViewById(R.id.rumors_summary_text)).setText(summary);
@@ -93,13 +89,7 @@ public class RumorsFragment extends Fragment {
         itemContainer.addView(item);
     }
 
-    private int dp2px(int dp) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dp * scale + 0.5f);
-    }
-
     private void initFragment() {
-        swipeRefreshLayout.setRefreshing(true);
 
         String address = "https://lab.isaaclin.cn/nCoV/api/rumors?num=5";
         HttpUtil.sendHttpRequest(address, new Callback() {
@@ -109,7 +99,6 @@ public class RumorsFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
             }
@@ -130,9 +119,12 @@ public class RumorsFragment extends Fragment {
                             addItem(count, rumor.title, rumor.summary,rumor.content);
                             count++;
                         }
-                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+
+                Message message = new Message();
+                message.what = 10002;
+                handler.sendMessage(message);
             }
         });
     }

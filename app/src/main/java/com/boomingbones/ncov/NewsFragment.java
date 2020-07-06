@@ -2,16 +2,19 @@ package com.boomingbones.ncov;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,12 +45,14 @@ public class NewsFragment extends Fragment {
     private static final int NEWS_ITEM_COUNT = 10;
     private List<News> newsList;
 
+    private Handler handler;
     private View view;
+    private Context context;
     private LinearLayout itemContainer;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
-    public NewsFragment() {
+    public NewsFragment(Handler handler) {
         // Required empty public constructor
+        this.handler = handler;
     }
 
     @SuppressLint("HandlerLeak")
@@ -56,24 +61,15 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_news, container, false);
         itemContainer = view.findViewById(R.id.news_container);
-        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
-
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
-            }
-        });
+        context = getContext();
 
         initFragment();
 
         // Inflate the layout for this fragment
         return view;
     }
-    
-    private void initFragment() {
-        swipeRefreshLayout.setRefreshing(true);
 
+    private void initFragment() {
         String address = "https://lab.isaaclin.cn/nCoV/api/news";
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
@@ -97,17 +93,22 @@ public class NewsFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        int count = 1;
                         for (News news : newsList) {
-                            addItem(news.pubTime, news.title, news.content, news.infoSource, news.sourceUrl);
+                            addItem(count, news.pubTime, news.title, news.content, news.infoSource, news.sourceUrl);
+                            count++;
                         }
-                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
+
+                Message message = new Message();
+                message.what = 10002;
+                handler.sendMessage(message);
             }
         });
     }
 
-    private void addItem(String time, String title, String content,
+    private void addItem(int number, String time, String title, String content,
                           String infoSource, String sourceUrl) {
         String timeUnit = "分钟前";
         long timeStamp = Long.parseLong(time);
@@ -122,6 +123,17 @@ public class NewsFragment extends Fragment {
         View cardView = item.findViewById(R.id.news_cardView);
         cardView.setTag(sourceUrl);
         cardView.setOnClickListener(new CardViewClickListener());
+
+        if (number == 1) {
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+
+            float scale = context.getResources().getDisplayMetrics().density;
+            int px = (int) (10 * scale + 0.5f);
+            params.setMargins(px, px, px, px / 2);
+            item.findViewById(R.id.news_cardView).setLayoutParams(params);
+        }
 
         ((TextView) item.findViewById(R.id.news_leftTime_text)).setText(leftTime + timeUnit);
         ((TextView) item.findViewById(R.id.news_title_text)).setText(title);

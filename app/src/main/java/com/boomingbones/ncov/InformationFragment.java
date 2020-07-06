@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +20,11 @@ import android.view.ViewGroup;
 public class InformationFragment extends Fragment {
 
     private View view;
+    private Handler handler;
 
-    public InformationFragment() {
+    public InformationFragment(Handler handler) {
         // Required empty public constructor
+        this.handler = handler;
     }
 
 
@@ -41,6 +45,10 @@ public class InformationFragment extends Fragment {
         for (View cardView : cardViewList) {
             cardView.setOnClickListener(new CardViewClickListener());
         }
+
+        Message message = new Message();
+        message.what =10002;
+        handler.sendMessage(message);
 
         return view;
     }

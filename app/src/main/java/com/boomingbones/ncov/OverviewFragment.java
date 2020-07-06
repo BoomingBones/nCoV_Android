@@ -5,9 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +46,11 @@ public class OverviewFragment extends Fragment {
 
     private View view;
     private Context context;
+    private Handler handler;
 
-    public OverviewFragment() {
+    public OverviewFragment(Handler handler) {
         // Required empty public constructor
+        this.handler = handler;
     }
 
 
@@ -123,6 +126,10 @@ public class OverviewFragment extends Fragment {
                         tabLayout.setupWithViewPager(viewPager);
                     }
                 });
+
+                Message message = new Message();
+                message.what = 10002;
+                handler.sendMessage(message);
             }
         });
     }
