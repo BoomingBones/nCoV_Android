@@ -70,35 +70,7 @@ public class NewsFragment extends Fragment {
         // Inflate the layout for this fragment
         return view;
     }
-
-    private void addItem(String time, String title, String content,
-                         String infoSource, String sourceUrl) {
-        long timeStamp = Long.parseLong(time);
-        String leftTime = String.valueOf((System.currentTimeMillis() - timeStamp) / 3600000);
-
-        View item = LayoutInflater.from(getContext())
-                .inflate(R.layout.fragment_news_item, null);
-        View cardView = item.findViewById(R.id.news_cardView);
-        cardView.setTag(sourceUrl);
-        cardView.setOnClickListener(new CardViewClickListener());
-
-        ((TextView) item.findViewById(R.id.news_leftTime_text)).setText(leftTime + "小时前");
-        ((TextView) item.findViewById(R.id.news_title_text)).setText(title);
-        ((TextView) item.findViewById(R.id.news_content_text)).setText("        " + content);
-        ((TextView) item.findViewById(R.id.news_source_text)).setText(infoSource);
-
-        itemContainer.addView(item);
-    }
-
-    class CardViewClickListener implements View.OnClickListener{
-        @Override
-        public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(v.getTag().toString()));
-            startActivity(intent);
-        }
-    }
-
+    
     private void initFragment() {
         swipeRefreshLayout.setRefreshing(true);
 
@@ -133,5 +105,38 @@ public class NewsFragment extends Fragment {
                 });
             }
         });
+    }
+
+    private void addItem(String time, String title, String content,
+                          String infoSource, String sourceUrl) {
+        String timeUnit = "分钟前";
+        long timeStamp = Long.parseLong(time);
+        long leftTime = (System.currentTimeMillis() - timeStamp) / 60000;
+        if (leftTime >= 60) {
+            leftTime /= 60;
+            timeUnit = "小时前";
+        }
+
+        View item = LayoutInflater.from(getContext())
+                .inflate(R.layout.fragment_news_item, null);
+        View cardView = item.findViewById(R.id.news_cardView);
+        cardView.setTag(sourceUrl);
+        cardView.setOnClickListener(new CardViewClickListener());
+
+        ((TextView) item.findViewById(R.id.news_leftTime_text)).setText(leftTime + timeUnit);
+        ((TextView) item.findViewById(R.id.news_title_text)).setText(title);
+        ((TextView) item.findViewById(R.id.news_content_text)).setText("        " + content);
+        ((TextView) item.findViewById(R.id.news_source_text)).setText(infoSource);
+
+        itemContainer.addView(item);
+    }
+
+    class CardViewClickListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse(v.getTag().toString()));
+            startActivity(intent);
+        }
     }
 }
