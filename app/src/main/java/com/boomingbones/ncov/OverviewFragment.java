@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,9 +42,6 @@ import okhttp3.Response;
  * A simple {@link Fragment} subclass.
  */
 public class OverviewFragment extends Fragment {
-
-    private static final int MODE_DOMESTIC = 1;
-    private static final int MODE_GLOBAL = 2;
 
     private View view;
     private Context context;
@@ -84,8 +82,8 @@ public class OverviewFragment extends Fragment {
                 String responseString = response.body().string();
                 String jsonString = null;
                 Gson gson = new Gson();
-                final List<Area> provinceList;
-                final List<Area> countryList;
+                final ArrayList<Area> provinceList;
+                final ArrayList<Area> countryList;
                 Matcher matcher;
                 JsonObject object;
 
@@ -113,10 +111,12 @@ public class OverviewFragment extends Fragment {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Fragment[] fragments = {
+                                new DomesticFragment(domestic, provinceList, context),
+                                new GlobalFragment(global, countryList, context)};
                         ViewPager viewPager = view.findViewById(R.id.viewPager);
                         ViewPagerAdapter adapter = new ViewPagerAdapter(
-                                getChildFragmentManager(),
-                                domestic, global, provinceList, countryList, context);
+                                getChildFragmentManager(), fragments);
                         viewPager.setAdapter(adapter);
 
                         TabLayout tabLayout = view.findViewById(R.id.tabLayout);

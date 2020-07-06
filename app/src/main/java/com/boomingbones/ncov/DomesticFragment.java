@@ -2,6 +2,7 @@ package com.boomingbones.ncov;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,44 +10,38 @@ import androidx.fragment.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.boomingbones.ncov.struct.Area;
 import com.boomingbones.ncov.struct.Domestic;
-import com.boomingbones.ncov.struct.Global;
-import com.boomingbones.ncov.struct.Overall;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OverviewAreaFragment extends Fragment {
+public class DomesticFragment extends Fragment {
+
 
     private static final int OVERVIEW_ITEM_COUNT = 15;
-    private static final int MODE_DOMESTIC = 1;
-    private static final int MODE_GLOBAL = 2;
 
-    private int mode;
-    private Overall overall;
-    private List<Area> areaList;
+    private Domestic domesticData;
+    private ArrayList<Area> areaList;
 
     private Context context;
 
-    public OverviewAreaFragment(Overall overall, List<Area> areaList, Context context, int mode) {
+    public DomesticFragment(Domestic domesticData, ArrayList<Area> areaList, Context context) {
         // Required empty public constructor
-        this.overall = overall;
+        this.domesticData = domesticData;
         this.areaList = areaList;
-        this.mode = mode;
-
         this.context = context;
     }
 
@@ -54,12 +49,21 @@ public class OverviewAreaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_overview_area, container, false);
+        View view = inflater.inflate(R.layout.fragment_domestic, container, false);
 
-        View domesticView = LayoutInflater.from(context).inflate(
-                R.layout.fragment_overview_header_domestic, container, false);
-        View globalView = LayoutInflater.from(context).inflate(
-                R.layout.fragment_overview_header_global, container, false);
+        view.findViewById(R.id.viewAll_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                Intent intent = new Intent(getActivity(), ListViewActivity.class);
+
+                bundle.putSerializable("area_data", areaList);
+                intent.putExtra("title", R.string.overall_domestic);
+
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
         int[] incrTextViewId = {
                 R.id.curConfirmedIncr_text, R.id.confirmedIncr_text,
@@ -72,45 +76,20 @@ public class OverviewAreaFragment extends Fragment {
         int[] colorId = {
                 R.color.curConfirmed, R.color.confirmed, R.color.death,
                 R.color.cured, R.color.imported, R.color.suspected};
+        String[] domesticIncrValue = {
+                domesticData.currentConfirmedIncr, domesticData.confirmedIncr,
+                domesticData.deadIncr, domesticData.curedIncr,
+                domesticData.importedIncr, domesticData.suspectIncr};
+        String[] domesticCountValue = {
+                domesticData.currentConfirmedCount, domesticData.confirmedCount,
+                domesticData.deadCount, domesticData.curedCount,
+                domesticData.importedCount, domesticData.suspectCount};
 
-        if (mode == MODE_DOMESTIC) {
-            Domestic domestic = (Domestic) overall;
-
-            String[] domesticIncrValue = {
-                    domestic.currentConfirmedIncr, domestic.confirmedIncr,
-                    domestic.deadIncr, domestic.curedIncr,
-                    domestic.importedIncr, domestic.suspectIncr};
-            String[] domesticCountValue = {
-                    domestic.currentConfirmedCount, domestic.confirmedCount,
-                    domestic.deadCount, domestic.curedCount,
-                    domestic.importedCount, domestic.suspectCount};
-
-            for (int i = 0; i < 6; i++) {
-                setTextViewText(domesticIncrValue[i], colorId[i],
-                        (TextView) domesticView.findViewById(incrTextViewId[i]));
-                ((TextView) domesticView.findViewById(countTextViewId[i]))
-                        .setText(addComma(domesticCountValue[i]));
-            }
-            ((FrameLayout) view.findViewById(R.id.overall_container)).addView(domesticView);
-        }
-
-        else {
-            Global global = (Global) overall;
-
-            String[] globalIncrValue = {
-                    global.currentConfirmedIncr, global.confirmedIncr,
-                    global.deadIncr, global.curedIncr};
-            String[] globalCountValue = {
-                    global.currentConfirmedCount, global.confirmedCount,
-                    global.deadCount, global.curedCount};
-
-            for (int i = 0; i < 4; i++) {
-                setTextViewText(globalIncrValue[i], colorId[i],
-                        (TextView) globalView.findViewById(incrTextViewId[i]));
-                ((TextView) globalView.findViewById(countTextViewId[i]))
-                        .setText(addComma(globalCountValue[i]));
-            }
-            ((FrameLayout) view.findViewById(R.id.overall_container)).addView(globalView);
+        for (int i = 0; i < 6; i++) {
+            setTextViewText(domesticIncrValue[i], colorId[i],
+                    (TextView) view.findViewById(incrTextViewId[i]));
+            ((TextView) view.findViewById(countTextViewId[i]))
+                    .setText(addComma(domesticCountValue[i]));
         }
 
         LinearLayout itemContainer = view.findViewById(R.id.overview_item_container);

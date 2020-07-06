@@ -1,6 +1,6 @@
 package com.boomingbones.ncov.struct;
 
-public class Global extends Overall {
+public class Global {
     
     public String currentConfirmedCount;
 

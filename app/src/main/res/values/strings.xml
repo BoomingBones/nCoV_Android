@@ -31,4 +31,7 @@
     <string name="information_5_content">潜伏期能检查出来吗？感染了新型冠状病毒一定会得肺炎吗？新冠肺炎如何治疗？</string>
     <string name="showAll">查看全部 ></string>
     <string name="more">查看详情</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

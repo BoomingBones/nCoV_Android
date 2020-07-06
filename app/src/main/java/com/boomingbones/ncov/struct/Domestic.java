@@ -2,7 +2,7 @@ package com.boomingbones.ncov.struct;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Domestic extends Overall {
+public class Domestic {
 
     public String currentConfirmedCount;
 
