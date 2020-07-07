@@ -12,10 +12,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -52,6 +52,15 @@ public class MainActivity extends AppCompatActivity {
         navView.setCheckedItem(R.id.nav_overview);
         navView.setNavigationItemSelectedListener(new NavItemSelectedListener());
 
+        findViewById(R.id.sourceCode_text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://github.com/BoomingBones/nCoV_Android"));
+                startActivity(intent);
+            }
+        });
+
         final ProgressBar progressBar = findViewById(R.id.progressBar);
 
         handler = new Handler() {
@@ -72,21 +81,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
-            case R.id.about:
-                startActivity(new Intent(this, AboutActivity.class));
-                break;
-        }
+        drawerLayout.openDrawer(GravityCompat.START);
         return true;
     }
 
