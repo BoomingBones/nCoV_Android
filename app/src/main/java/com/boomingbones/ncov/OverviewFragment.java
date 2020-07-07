@@ -44,6 +44,8 @@ import okhttp3.Response;
  */
 public class OverviewFragment extends Fragment {
 
+    private static final int FRAGMENT_UPDATE_FINISH = 10002;
+
     private View view;
     private Context context;
     private Handler handler;
@@ -76,6 +78,11 @@ public class OverviewFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(context, "Failure", Toast.LENGTH_LONG).show();
+
+                        view.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
+                        Message message = new Message();
+                        message.what = FRAGMENT_UPDATE_FINISH;
+                        handler.sendMessage(message);
                     }
                 });
             }
@@ -124,11 +131,13 @@ public class OverviewFragment extends Fragment {
 
                         TabLayout tabLayout = view.findViewById(R.id.tabLayout);
                         tabLayout.setupWithViewPager(viewPager);
+
+                        view.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
                     }
                 });
 
                 Message message = new Message();
-                message.what = 10002;
+                message.what = FRAGMENT_UPDATE_FINISH;
                 handler.sendMessage(message);
             }
         });

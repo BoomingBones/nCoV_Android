@@ -42,6 +42,7 @@ import okhttp3.Response;
  */
 public class NewsFragment extends Fragment {
 
+    private static final int FRAGMENT_UPDATE_FINISH = 10002;
     private static final int NEWS_ITEM_COUNT = 10;
     private List<News> newsList;
 
@@ -78,6 +79,10 @@ public class NewsFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+
+                        Message message = new Message();
+                        message.what = FRAGMENT_UPDATE_FINISH;
+                        handler.sendMessage(message);
                     }
                 });
             }
@@ -95,14 +100,15 @@ public class NewsFragment extends Fragment {
                     public void run() {
                         int count = 1;
                         for (News news : newsList) {
-                            addItem(count, news.pubTime, news.title, news.content, news.infoSource, news.sourceUrl);
+                            addItem(count, news.pubTime, news.title,
+                                    news.content, news.infoSource, news.sourceUrl);
                             count++;
                         }
                     }
                 });
 
                 Message message = new Message();
-                message.what = 10002;
+                message.what = FRAGMENT_UPDATE_FINISH;
                 handler.sendMessage(message);
             }
         });

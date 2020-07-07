@@ -40,7 +40,7 @@ import okhttp3.Response;
  */
 public class RumorsFragment extends Fragment {
 
-    private static final int RUMORS_ITEM_COUNT = 5;
+    private static final int FRAGMENT_UPDATE_FINISH = 10002;
     private List<Rumor> rumorsList;
 
     private View view;
@@ -99,6 +99,10 @@ public class RumorsFragment extends Fragment {
                     @Override
                     public void run() {
                         Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+
+                        Message message = new Message();
+                        message.what = FRAGMENT_UPDATE_FINISH;
+                        handler.sendMessage(message);
                     }
                 });
             }
@@ -123,7 +127,7 @@ public class RumorsFragment extends Fragment {
                 });
 
                 Message message = new Message();
-                message.what = 10002;
+                message.what = FRAGMENT_UPDATE_FINISH;
                 handler.sendMessage(message);
             }
         });

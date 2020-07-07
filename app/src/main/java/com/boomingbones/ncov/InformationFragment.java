@@ -19,6 +19,8 @@ import android.view.ViewGroup;
  */
 public class InformationFragment extends Fragment {
 
+    private static final int FRAGMENT_UPDATE_FINISH = 10002;
+
     private View view;
     private Handler handler;
 
@@ -47,7 +49,7 @@ public class InformationFragment extends Fragment {
         }
 
         Message message = new Message();
-        message.what =10002;
+        message.what =FRAGMENT_UPDATE_FINISH;
         handler.sendMessage(message);
 
         return view;
