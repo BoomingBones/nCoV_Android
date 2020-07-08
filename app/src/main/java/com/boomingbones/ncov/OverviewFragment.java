@@ -50,7 +50,7 @@ public class OverviewFragment extends Fragment {
     private Context context;
     private Handler handler;
 
-    public OverviewFragment(Handler handler) {
+    OverviewFragment(Handler handler) {
         // Required empty public constructor
         this.handler = handler;
     }

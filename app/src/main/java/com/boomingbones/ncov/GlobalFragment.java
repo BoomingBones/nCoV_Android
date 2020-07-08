@@ -21,7 +21,6 @@ import com.boomingbones.ncov.struct.Global;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -37,7 +36,7 @@ public class GlobalFragment extends Fragment {
 
     private Context context;
 
-    public GlobalFragment(Global globalData, ArrayList<Area> areaList, Context context) {
+    GlobalFragment(Global globalData, ArrayList<Area> areaList, Context context) {
         // Required empty public constructor
         this.globalData = globalData;
         this.areaList = areaList;
@@ -115,8 +114,10 @@ public class GlobalFragment extends Fragment {
             }
 
             SpannableString spannableString = new SpannableString(text);
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(colorId));
-            spannableString.setSpan(colorSpan, 3, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                    getResources().getColor(colorId));
+            spannableString.setSpan(colorSpan, 3, text.length(),
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             textView.setText(spannableString);
         }
     }

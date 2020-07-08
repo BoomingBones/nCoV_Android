@@ -47,11 +47,10 @@ public class NewsFragment extends Fragment {
     private List<News> newsList;
 
     private Handler handler;
-    private View view;
     private Context context;
     private LinearLayout itemContainer;
 
-    public NewsFragment(Handler handler) {
+    NewsFragment(Handler handler) {
         // Required empty public constructor
         this.handler = handler;
     }
@@ -60,7 +59,7 @@ public class NewsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_news, container, false);
         itemContainer = view.findViewById(R.id.news_container);
         context = getContext();
 

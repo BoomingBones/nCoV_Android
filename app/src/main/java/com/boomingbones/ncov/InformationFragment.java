@@ -21,10 +21,9 @@ public class InformationFragment extends Fragment {
 
     private static final int FRAGMENT_UPDATE_FINISH = 10002;
 
-    private View view;
     private Handler handler;
 
-    public InformationFragment(Handler handler) {
+    InformationFragment(Handler handler) {
         // Required empty public constructor
         this.handler = handler;
     }
@@ -34,7 +33,7 @@ public class InformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_information, container, false);
+        View view = inflater.inflate(R.layout.fragment_information, container, false);
 
         View[] cardViewList = {
                 view.findViewById(R.id.information_cardView1),

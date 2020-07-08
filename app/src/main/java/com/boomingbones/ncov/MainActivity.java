@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         handler = new Handler() {
             @Override
-            public void handleMessage(Message msg) {
+            public void handleMessage(@NonNull Message msg) {
                 switch (msg.what) {
                     case FRAGMENT_UPDATE_START:
                         progressBar.setVisibility(View.VISIBLE);

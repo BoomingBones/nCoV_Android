@@ -10,7 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private Fragment[] fragments;
-    private String[] title = {"全国疫情", "全球疫情"};
+    private String[] title = {"国内疫情", "全球疫情"};
 
     public ViewPagerAdapter(@NonNull FragmentManager fm, Fragment[] fragments) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);

@@ -21,8 +21,6 @@ import com.boomingbones.ncov.struct.Domestic;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 
 /**
@@ -38,7 +36,7 @@ public class DomesticFragment extends Fragment {
 
     private Context context;
 
-    public DomesticFragment(Domestic domesticData, ArrayList<Area> areaList, Context context) {
+    DomesticFragment(Domestic domesticData, ArrayList<Area> areaList, Context context) {
         // Required empty public constructor
         this.domesticData = domesticData;
         this.areaList = areaList;
@@ -118,8 +116,10 @@ public class DomesticFragment extends Fragment {
             }
 
             SpannableString spannableString = new SpannableString(text);
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(getResources().getColor(colorId));
-            spannableString.setSpan(colorSpan, 3, text.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            ForegroundColorSpan colorSpan = new ForegroundColorSpan(
+                    getResources().getColor(colorId));
+            spannableString.setSpan(colorSpan, 3, text.length(),
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
             textView.setText(spannableString);
         }
     }

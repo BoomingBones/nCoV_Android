@@ -43,12 +43,11 @@ public class RumorsFragment extends Fragment {
     private static final int FRAGMENT_UPDATE_FINISH = 10002;
     private List<Rumor> rumorsList;
 
-    private View view;
     private Context context;
     private LinearLayout itemContainer;
     private Handler handler;
 
-    public RumorsFragment(Handler handler) {
+    RumorsFragment(Handler handler) {
         // Required empty public constructor
         this.handler = handler;
     }
@@ -58,7 +57,7 @@ public class RumorsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_rumors, container, false);
+        View view = inflater.inflate(R.layout.fragment_rumors, container, false);
         context = getContext();
         itemContainer = view.findViewById(R.id.rumors_container);
 
