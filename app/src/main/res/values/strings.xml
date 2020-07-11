@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">nCoV_Android</string>
-    <string name="version">Ver. 1.5.1</string>
+    <string name="version">Ver. 1.5.2</string>
 
     <string name="overview">疫情总览</string>
     <string name="news">实时播报</string>
@@ -13,7 +13,7 @@
     <string name="overview_death">死亡</string>
     <string name="overview_cured">治愈</string>
 
-    <string name="overall_domestic">全国疫情详情</string>
+    <string name="overall_domestic">国内疫情详情</string>
     <string name="overall_global">全球疫情详情</string>
 
     <string name="information_whats_title">什么是新型冠状病毒？</string>

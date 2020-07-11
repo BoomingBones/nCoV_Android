@@ -84,10 +84,12 @@ public class DomesticFragment extends Fragment {
                 domesticData.importedCount, domesticData.suspectCount};
 
         for (int i = 0; i < 6; i++) {
-            setTextViewText(domesticIncrValue[i], colorId[i],
-                    (TextView) view.findViewById(incrTextViewId[i]));
             ((TextView) view.findViewById(countTextViewId[i]))
                     .setText(addComma(domesticCountValue[i]));
+            if (domesticIncrValue[i] != null) {
+                setTextViewText(domesticIncrValue[i], colorId[i],
+                        (TextView) view.findViewById(incrTextViewId[i]));
+            }
         }
 
         LinearLayout itemContainer = view.findViewById(R.id.overview_item_container);

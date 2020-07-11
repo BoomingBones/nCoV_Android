@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,10 +83,12 @@ public class GlobalFragment extends Fragment {
                 globalData.deadCount, globalData.curedCount};
 
         for (int i = 0; i < 4; i++) {
-            setTextViewText(globalIncrValue[i], colorId[i],
-                    (TextView) view.findViewById(incrTextViewId[i]));
             ((TextView) view.findViewById(countTextViewId[i]))
                     .setText(addComma(globalCountValue[i]));
+            if (globalIncrValue[i] != null) {
+                setTextViewText(globalIncrValue[i], colorId[i],
+                        (TextView) view.findViewById(incrTextViewId[i]));
+            }
         }
 
         LinearLayout itemContainer = view.findViewById(R.id.overview_item_container);
