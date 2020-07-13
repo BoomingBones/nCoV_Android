@@ -11,4 +11,6 @@ public class Rumor {
 
     @SerializedName("body")
     public String content;
+
+    public int rumorType;
 }

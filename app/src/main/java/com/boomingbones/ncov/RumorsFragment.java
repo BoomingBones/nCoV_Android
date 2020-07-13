@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,15 +21,14 @@ import android.widget.Toast;
 import com.boomingbones.ncov.struct.Rumor;
 import com.boomingbones.ncov.tools.HttpUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -66,7 +66,7 @@ public class RumorsFragment extends Fragment {
         return view;
     }
 
-    private void addItem(int number, String title, String summary, String content) {
+    private void addItem(int number, String title, String summary, String content, int type) {
         View item = LayoutInflater.from(context)
                 .inflate(R.layout.fragment_rumors_item, null);
         if (number == 1) {
@@ -85,12 +85,21 @@ public class RumorsFragment extends Fragment {
         ((TextView) item.findViewById(R.id.rumors_summary_text)).setText(summary);
         ((TextView) item.findViewById(R.id.rumors_content_text)).setText("        " + content);
 
+        ImageView imageView = item.findViewById(R.id.rumors_type_image);
+        if (type == 0) {
+            imageView.setImageResource(R.drawable.img_rumors_false);
+        } else if (type == 1) {
+            imageView.setImageResource(R.drawable.img_rumors_true);
+        } else {
+            imageView.setImageResource(R.drawable.img_rumors_unknown);
+        }
+
         itemContainer.addView(item);
     }
 
     private void initFragment() {
 
-        String address = "https://lab.isaaclin.cn/nCoV/api/rumors?num=5";
+        String address = "https://ncov.dxy.cn/ncovh5/view/pneumonia";
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -109,17 +118,21 @@ public class RumorsFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseString = response.body().string();
-                JsonObject object = new JsonParser().parse(responseString).getAsJsonObject();
-                JsonElement element = object.get("results");
+                Matcher matcher = Pattern.compile("(?<=RumorList = ).*?(?=\\}catch)").matcher(responseString);
+                String jsonString = null;
+                if (matcher.find()) {
+                    jsonString = matcher.group();
+                }
                 Gson gson = new Gson();
-                rumorsList = gson.fromJson(element, new TypeToken<List<Rumor>>(){}.getType());
+                rumorsList = gson.fromJson(jsonString, new TypeToken<List<Rumor>>(){}.getType());
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         int count = 1;
                         for (Rumor rumor : rumorsList) {
-                            addItem(count, rumor.title, rumor.summary,rumor.content);
+                            addItem(count, rumor.title, rumor.summary, rumor.content, rumor.rumorType);
+                            if (count == 5) { break; }
                             count++;
                         }
                     }

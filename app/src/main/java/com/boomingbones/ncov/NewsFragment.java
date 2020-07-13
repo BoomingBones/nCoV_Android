@@ -31,6 +31,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -70,7 +72,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void initFragment() {
-        String address = "https://lab.isaaclin.cn/nCoV/api/news";
+        String address = "https://ncov.dxy.cn/ncovh5/view/pneumonia";
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -89,10 +91,13 @@ public class NewsFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 String responseString = response.body().string();
-                JsonObject object = new JsonParser().parse(responseString).getAsJsonObject();
-                JsonElement element = object.get("results");
+                Matcher matcher = Pattern.compile("(?<=Service1 = ).*?(?=\\}catch)").matcher(responseString);
+                String jsonString = null;
+                if (matcher.find()) {
+                    jsonString = matcher.group();
+                }
                 Gson gson = new Gson();
-                newsList = gson.fromJson(element, new TypeToken<List<News>>(){}.getType());
+                newsList = gson.fromJson(jsonString, new TypeToken<List<News>>(){}.getType());
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
