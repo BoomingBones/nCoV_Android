@@ -7,4 +7,3 @@
   * **疾病知识：** 显示与病毒及防疫相关的知识，可点击跳转至相应的网页<br>
   
 数据来源为[全球新冠病毒最新实时疫情地图_丁香园](https://ncov.dxy.cn/ncovh5/view/pneumonia)<br>
-实时播报/辟谣与防护模块使用[BlankerL/DXY-COVID-19-Crawler](https://github.com/BlankerL/DXY-COVID-19-Crawler)进行数据收集
