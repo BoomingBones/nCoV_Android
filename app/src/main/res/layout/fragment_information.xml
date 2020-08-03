@@ -21,8 +21,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/0"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,8 +70,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/1"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -140,8 +138,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/2"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -207,11 +204,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/6"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -279,8 +274,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/5"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -348,8 +342,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/3"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -417,8 +410,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginBottom="10dp"
             android:tag="https://ask.dxy.com/ama/index#/disease/24677/info/4"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="3dp">
+            app:cardCornerRadius="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
