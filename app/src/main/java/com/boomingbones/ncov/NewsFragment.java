@@ -45,7 +45,7 @@ import okhttp3.Response;
 public class NewsFragment extends Fragment {
 
     private static final int FRAGMENT_UPDATE_FINISH = 10002;
-    private static final int NEWS_ITEM_COUNT = 10;
+//    private static final int NEWS_ITEM_COUNT = 10;
     private List<News> newsList;
 
     private Handler handler;
@@ -76,16 +76,7 @@ public class NewsFragment extends Fragment {
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-
-                        Message message = new Message();
-                        message.what = FRAGMENT_UPDATE_FINISH;
-                        handler.sendMessage(message);
-                    }
-                });
+                updateFinish(false);
             }
 
             @Override
@@ -99,21 +90,23 @@ public class NewsFragment extends Fragment {
                 Gson gson = new Gson();
                 newsList = gson.fromJson(jsonString, new TypeToken<List<News>>(){}.getType());
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        int count = 1;
-                        for (News news : newsList) {
-                            addItem(count, news.pubTime, news.title,
-                                    news.content, news.infoSource, news.sourceUrl);
-                            count++;
+                if (newsList != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int count = 1;
+                            for (News news : newsList) {
+                                addItem(count, news.pubTime, news.title,
+                                        news.content, news.infoSource, news.sourceUrl);
+                                count++;
+                            }
                         }
-                    }
-                });
+                    });
 
-                Message message = new Message();
-                message.what = FRAGMENT_UPDATE_FINISH;
-                handler.sendMessage(message);
+                    updateFinish(true);
+                } else {
+                    updateFinish(false);
+                }
             }
         });
     }
@@ -160,5 +153,20 @@ public class NewsFragment extends Fragment {
             intent.setData(Uri.parse(v.getTag().toString()));
             startActivity(intent);
         }
+    }
+
+    private void updateFinish(boolean isSuccess) {
+        if (!isSuccess) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        Message message = new Message();
+        message.what = FRAGMENT_UPDATE_FINISH;
+        handler.sendMessage(message);
     }
 }

@@ -103,16 +103,7 @@ public class RumorsFragment extends Fragment {
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
-
-                        Message message = new Message();
-                        message.what = FRAGMENT_UPDATE_FINISH;
-                        handler.sendMessage(message);
-                    }
-                });
+                updateFinish(false);
             }
 
             @Override
@@ -126,22 +117,42 @@ public class RumorsFragment extends Fragment {
                 Gson gson = new Gson();
                 rumorsList = gson.fromJson(jsonString, new TypeToken<List<Rumor>>(){}.getType());
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        int count = 1;
-                        for (Rumor rumor : rumorsList) {
-                            addItem(count, rumor.title, rumor.summary, rumor.content, rumor.rumorType);
-                            if (count == 5) { break; }
-                            count++;
+                if (rumorsList != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int count = 1;
+                            for (Rumor rumor : rumorsList) {
+                                addItem(count, rumor.title, rumor.summary, rumor.content, rumor.rumorType);
+                                if (count == 5) {
+                                    break;
+                                }
+                                count++;
+                            }
                         }
-                    }
-                });
+                    });
 
-                Message message = new Message();
-                message.what = FRAGMENT_UPDATE_FINISH;
-                handler.sendMessage(message);
+                    updateFinish(true);
+                }
+                else {
+                    updateFinish(false);
+                }
             }
         });
+    }
+
+    private void updateFinish(boolean isSuccess) {
+        if (!isSuccess) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        Message message = new Message();
+        message.what = FRAGMENT_UPDATE_FINISH;
+        handler.sendMessage(message);
     }
 }

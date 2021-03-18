@@ -74,17 +74,7 @@ public class OverviewFragment extends Fragment {
         HttpUtil.sendHttpRequest(address, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context, "Failure", Toast.LENGTH_LONG).show();
-
-                        view.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
-                        Message message = new Message();
-                        message.what = FRAGMENT_UPDATE_FINISH;
-                        handler.sendMessage(message);
-                    }
-                });
+                updateFinish(false);
             }
 
             @Override
@@ -118,28 +108,45 @@ public class OverviewFragment extends Fragment {
                 }
                 provinceList = gson.fromJson(jsonString, new TypeToken<List<Area>>(){}.getType());
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Fragment[] fragments = {
-                                new DomesticFragment(domestic, provinceList, context),
-                                new GlobalFragment(global, countryList, context)};
-                        ViewPager viewPager = view.findViewById(R.id.viewPager);
-                        ViewPagerAdapter adapter = new ViewPagerAdapter(
-                                getChildFragmentManager(), fragments);
-                        viewPager.setAdapter(adapter);
+                if (domestic != null && provinceList != null && global != null && countryList != null) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Fragment[] fragments = {
+                                    new DomesticFragment(domestic, provinceList, context),
+                                    new GlobalFragment(global, countryList, context)};
+                            ViewPager viewPager = view.findViewById(R.id.viewPager);
+                            ViewPagerAdapter adapter = new ViewPagerAdapter(
+                                    getChildFragmentManager(), fragments);
+                            viewPager.setAdapter(adapter);
 
-                        TabLayout tabLayout = view.findViewById(R.id.tabLayout);
-                        tabLayout.setupWithViewPager(viewPager);
+                            TabLayout tabLayout = view.findViewById(R.id.tabLayout);
+                            tabLayout.setupWithViewPager(viewPager);
 
-                        view.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
-                    }
-                });
+                            view.findViewById(R.id.tabLayout).setVisibility(View.VISIBLE);
+                        }
+                    });
 
-                Message message = new Message();
-                message.what = FRAGMENT_UPDATE_FINISH;
-                handler.sendMessage(message);
+                    updateFinish(true);
+                } else {
+                    updateFinish(false);
+                }
             }
         });
+    }
+
+    private void updateFinish(boolean isSuccess) {
+        if (!isSuccess) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getContext(), "Failure", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        Message message = new Message();
+        message.what = FRAGMENT_UPDATE_FINISH;
+        handler.sendMessage(message);
     }
 }
