@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_overview">
+
+    <fragment
+        android:id="@+id/nav_overview"
+        android:name="com.boomingbones.ncov_mvvm.ui.overview.OverviewFragment"
+        android:label="@string/menu_overview"
+        tools:layout="@layout/fragment_overview" >
+        <action
+            android:id="@+id/action_nav_overview_to_nav_showAll"
+            app:destination="@id/nav_showAll"
+            app:enterAnim="@anim/anim_slide_in_left"
+            app:exitAnim="@anim/anim_slide_out_left"
+            app:popEnterAnim="@anim/anim_slide_in_right"
+            app:popExitAnim="@anim/anim_slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_showAll"
+        android:name="com.boomingbones.ncov_mvvm.ui.overview.secondary.showAll.ShowAllFragment"
+        tools:layout="@layout/fragment_showall" />
+
+    <fragment
+        android:id="@+id/nav_news"
+        android:name="com.boomingbones.ncov_mvvm.ui.news.NewsFragment"
+        android:label="@string/menu_news"
+        tools:layout="@layout/fragment_news" />
+
+    <fragment
+        android:id="@+id/nav_rumors"
+        android:name="com.boomingbones.ncov_mvvm.ui.rumors.RumorsFragment"
+        android:label="@string/menu_rumors"
+        tools:layout="@layout/fragment_rumors" />
+
+    <fragment
+        android:id="@+id/nav_information"
+        android:name="com.boomingbones.ncov_mvvm.ui.information.InformationFragment"
+        android:label="@string/menu_information"
+        tools:layout="@layout/fragment_information" />
+</navigation>

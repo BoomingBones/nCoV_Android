@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollView_global"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GlobalFragment">
+    tools:context=".ui.overview.secondary.global.GlobalFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -174,7 +175,7 @@
         </androidx.cardview.widget.CardView>
 
         <include
-            layout="@layout/fragment_overview_list_header"
+            layout="@layout/activity_header_listview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -192,7 +193,7 @@
             android:showDividers="middle|end" />
 
         <TextView
-            android:id="@+id/viewAll_text"
+            android:id="@+id/showAll_text"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center"

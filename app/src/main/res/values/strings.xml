@@ -1,12 +1,21 @@
 <resources>
-    <string name="app_name">nCoV_Android</string>
-    <string name="version">Ver. 1.6.1</string>
+    <string name="app_name">nCoV_MVVM</string>
+    <string name="version">Ver. 2.0.0</string>
 
-    <string name="overview">疫情总览</string>
-    <string name="news">实时播报</string>
-    <string name="rumors">辟谣与防护</string>
-    <string name="information">疾病知识</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
 
+    <string name="menu_overview">疫情总览</string>
+    <string name="menu_news">实时播报</string>
+    <string name="menu_rumors">辟谣与防护</string>
+    <string name="menu_information">疾病知识</string>
+
+    <string name="overview_domestic">国内疫情</string>
+    <string name="overview_global">全球疫情</string>
     <string name="overview_area">地区</string>
     <string name="overview_curConfirmed">现存确诊</string>
     <string name="overview_confirmed">累计确诊</string>
@@ -15,6 +24,9 @@
 
     <string name="overall_domestic">国内疫情详情</string>
     <string name="overall_global">全球疫情详情</string>
+
+    <string name="news_leftTime">%1$d%2$s前</string>
+    <string name="news_content">\u3000\u3000%1$s</string>
 
     <string name="information_whats_title">什么是新型冠状病毒？</string>
     <string name="information_whats_content">此次流行的冠状病毒为一种新发现的冠状病毒，国际病毒分类委员会命名为 SARS-Cov-2。因为人群缺少对新型病毒株的免疫力，所以人群普遍易感。</string>
@@ -30,6 +42,7 @@
     <string name="information_4_content">新型冠状病毒肺炎患者有什么临床表现？医生如何识别并确诊新型冠状病毒肺炎？</string>
     <string name="information_5_title">治疗方法早知道</string>
     <string name="information_5_content">潜伏期能检查出来吗？感染了新型冠状病毒一定会得肺炎吗？新冠肺炎如何治疗？</string>
+
     <string name="showAll">查看全部 ></string>
     <string name="more">查看详情</string>
 
